@@ -3,13 +3,13 @@
 using namespace std;
 
 class Building;
-class goodFriend
+class GoodFriend
 {
 private:
     Building *building;
 
 public:
-    goodFriend();
+    GoodFriend();
     void visit(); // 只让 visit 函数作为 Building 的好朋友，可以发访问 Building 中私有内容
     void visit2();
 };
@@ -22,8 +22,8 @@ public:
 private:
     string bedRoom; // 卧室
 
-    // 告诉编译器 goodFriend 类中的 visit 成员函数是 Building 好朋友，可以访问私有内容
-    friend void goodFriend::visit();
+    // 告诉编译器 GoodFriend 类中的 visit 成员函数是 Building 好朋友，可以访问私有内容
+    friend void GoodFriend::visit();
 
 public:
     Building();
@@ -35,18 +35,18 @@ Building::Building()
     this->bedRoom = "卧室";
 }
 
-goodFriend::goodFriend()
+GoodFriend::GoodFriend()
 {
     building = new Building;
 }
 
-void goodFriend::visit()
+void GoodFriend::visit()
 {
     cout << "好友正在访问" << building->sittingRoom << endl;
     cout << "好友正在访问" << building->bedRoom << endl;
 }
 
-void goodFriend::visit2()
+void GoodFriend::visit2()
 {
     cout << "好友正在访问" << building->sittingRoom << endl;
     // cout << "好友正在访问" << building->bedRoom << endl;
@@ -54,7 +54,7 @@ void goodFriend::visit2()
 
 void test1()
 {
-    goodFriend g;
+    GoodFriend g;
     g.visit();
 }
 
