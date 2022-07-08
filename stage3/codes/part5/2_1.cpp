@@ -48,7 +48,7 @@ void test2()
     // 打开文件
     // ofs.open("person.txt", ios::out | ios::binary);
 
-    Person p = {"张三", 18};
+    People p = {"张三", 18};
 
     // 写文件
     ofs.write((const char *)&p, sizeof(p));
