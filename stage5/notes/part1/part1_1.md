@@ -251,6 +251,7 @@ void mySort(T arr[], int len)
         }
     }
 }
+
 template <typename T>
 void printArray(T arr[], int len)
 {
@@ -261,6 +262,7 @@ void printArray(T arr[], int len)
     }
     cout << endl;
 }
+
 void test1()
 {
     // 测试 char 数组
@@ -562,6 +564,7 @@ int main()
 ```
 
 > 利用具体化的模板，可以解决自定义类型的通用化
+
 > 学习模板并不是为了写模板，而是在 STL 能够运用系统提供的模板
 
 ---

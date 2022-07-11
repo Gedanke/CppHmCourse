@@ -31,6 +31,7 @@ void mySort(T arr[], int len)
         }
     }
 }
+
 template <typename T>
 void printArray(T arr[], int len)
 {
@@ -41,6 +42,7 @@ void printArray(T arr[], int len)
     }
     cout << endl;
 }
+
 void test1()
 {
     // 测试 char 数组
