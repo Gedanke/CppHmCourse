@@ -479,6 +479,67 @@ int main()
 
 ---
 
+## deque 交换容器
+
+与 `vector` 类似，`deque` 也有交换容器功能
+
+**函数原型**:
+
+* `swap(deq);`    将 `deq` 与本身的元素交换
+
+demo:
+
+```cpp
+#include <iostream>
+#include <deque>
+
+using namespace std;
+
+void show(const deque<int> &d)
+{
+    for (auto it = d.begin(); it != d.end(); it++)
+    {
+        cout << *it << " ";
+    }
+    cout << endl;
+}
+
+int main()
+{
+    deque<int> d1{1, 2, 3};
+    deque<int> d2{4, 5, 6};
+    show(d1);
+    show(d2);
+
+    cout << "d1.swap(d2)" << endl;
+    d1.swap(d2);
+    show(d1);
+    show(d2);
+
+    cout << "swap(d1, d2)" << endl;
+    swap(d1, d2);
+    show(d1);
+    show(d2);
+
+    /*
+        1 2 3
+        4 5 6
+        d1.swap(d2)
+        4 5 6
+        1 2 3
+        swap(d1, d2)
+        1 2 3
+        4 5 6
+    */
+
+    return 0;
+}
+```
+
+> 由于 `deque` 没有 `capacity`，因此没有像 `vector` 那样收缩内存的功能
+
+---
+
 ## deque 排序
 
 **功能描述**：

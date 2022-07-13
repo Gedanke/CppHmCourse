@@ -1,38 +1,43 @@
 #include <iostream>
 #include <deque>
-#include <algorithm>
 
 using namespace std;
 
-void printDeque(const deque<int> &d)
+void show(const deque<int> &d)
 {
-    for (deque<int>::const_iterator it = d.begin(); it != d.end(); it++)
+    for (auto it = d.begin(); it != d.end(); it++)
     {
         cout << *it << " ";
     }
     cout << endl;
 }
 
-void test1()
-{
-    deque<int> d;
-    d.push_back(10);
-    d.push_back(20);
-    d.push_front(100);
-    d.push_front(200);
-
-    printDeque(d);
-    sort(d.begin(), d.end());
-    printDeque(d);
-}
-
 int main()
 {
-    test1();
+    deque<int> d1{1, 2, 3};
+    deque<int> d2{4, 5, 6};
+    show(d1);
+    show(d2);
+
+    cout << "d1.swap(d2)" << endl;
+    d1.swap(d2);
+    show(d1);
+    show(d2);
+
+    cout << "swap(d1, d2)" << endl;
+    swap(d1, d2);
+    show(d1);
+    show(d2);
 
     /*
-        200 100 10 20
-        10 20 100 200
+        1 2 3
+        4 5 6
+        d1.swap(d2)
+        4 5 6
+        1 2 3
+        swap(d1, d2)
+        1 2 3
+        4 5 6
     */
 
     return 0;
