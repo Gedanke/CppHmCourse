@@ -319,6 +319,8 @@ int main()
 * `int compare(const string &s) const;` 与字符串 `s` 比较
 * `int compare(const char *s) const;`   与字符串 `s` 比较
 
+demo:
+
 ```cpp
 #include <iostream>
 
