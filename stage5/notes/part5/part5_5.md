@@ -23,7 +23,7 @@
 
 **函数原型**：
 
-* `accumulate(iterator beg, iterator end, value);`  计算容器元素累计总和
+`accumulate(iterator beg, iterator end, value);`  计算容器元素累计总和
 
 * `beg` 开始迭代器
 * `end` 结束迭代器
@@ -72,7 +72,7 @@ int main()
 
 **函数原型**：
 
-* `fill(iterator beg, iterator end, value);`    向容器中填充元素
+`fill(iterator beg, iterator end, value);`    向容器中填充元素
 
 * `beg` 开始迭代器
 * `end` 结束迭代器

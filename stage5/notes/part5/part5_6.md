@@ -20,7 +20,7 @@
 
 **函数原型**：
 
-* `set_intersection(iterator beg1, iterator end1, iterator beg2, iterator end2, iterator dest);`    求两个集合的交集。注意，两个集合必须是有序序列
+`set_intersection(iterator beg1, iterator end1, iterator beg2, iterator end2, iterator dest);`    求两个集合的交集。注意，两个集合必须是有序序列
 
 * `beg1` 容器 1 开始迭代器
 * `end1` 容器 1 结束迭代器
@@ -107,7 +107,7 @@ int main()
 
 **函数原型**：
 
-* `set_union(iterator beg1, iterator end1, iterator beg2, iterator end2, iterator dest);`   求两个集合的并集。注意: 两个集合必须是有序序列
+`set_union(iterator beg1, iterator end1, iterator beg2, iterator end2, iterator dest);`   求两个集合的并集。注意: 两个集合必须是有序序列
 
 * `beg1` 容器 1 开始迭代器
 * `end1` 容器 1 结束迭代器
@@ -194,7 +194,7 @@ int main()
 
 **函数原型**：
 
-* `set_difference(iterator beg1, iterator end1, iterator beg2, iterator end2, iterator dest);`  求两个集合的差集。注意: 两个集合必须是有序序列
+`set_difference(iterator beg1, iterator end1, iterator beg2, iterator end2, iterator dest);`  求两个集合的差集。注意: 两个集合必须是有序序列
 
 * `beg1` 容器 1 开始迭代器
 * `end1` 容器 1 结束迭代器

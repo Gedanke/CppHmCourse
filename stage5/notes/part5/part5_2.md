@@ -23,9 +23,8 @@
 
 **函数原型**：
 
-`find(iterator beg, iterator end, value);`
+`find(iterator beg, iterator end, value);`	按值查找元素，找到返回指定位置迭代器，找不到返回结束迭代器位置
 
-* 按值查找元素，找到返回指定位置迭代器，找不到返回结束迭代器位置
 * `beg` 开始迭代器
 * `end` 结束迭代器
 * `value` 查找的元素
@@ -121,7 +120,7 @@ int main()
 }
 ```
 
-> 总结： 利用 `find` 可以在容器中找指定的元素，返回值是迭代器；自定义类型需要重载 `==`
+> 总结：利用 `find` 可以在容器中找指定的元素，返回值是迭代器；自定义类型需要重载 `==`
 
 ---
 
@@ -133,9 +132,8 @@ int main()
 
 **函数原型**：
 
-`find_if(iterator beg, iterator end, _Pred);`
+`find_if(iterator beg, iterator end, _Pred);`	按值查找元素，找到返回指定位置迭代器，找不到返回结束迭代器位置
 
-* 按值查找元素，找到返回指定位置迭代器，找不到返回结束迭代器位置
 * `beg` 开始迭代器
 * `end` 结束迭代器
 * `_Pred` 函数或者谓词(返回 `bool` 类型的仿函数)
@@ -259,9 +257,8 @@ int main()
 
 **函数原型**：
 
-`adjacent_find(iterator beg, iterator end);`
+`adjacent_find(iterator beg, iterator end);`	查找相邻重复元素，返回相邻元素的第一个位置的迭代器
 
-* 查找相邻重复元素，返回相邻元素的第一个位置的迭代器
 * `beg` 开始迭代器
 * `end` 结束迭代器
 
@@ -312,9 +309,7 @@ int main()
 
 **函数原型**：
 
-`bool binary_search(iterator beg, iterator end, value);`
-
-查找指定的元素，查到返回 `true`，否则 `false`，注意: 在 **无序序列中不可用**
+`bool binary_search(iterator beg, iterator end, value);`	查找指定的元素，查到返回 `true`，否则 `false`，注意: 在 **无序序列中不可用**
 
 * `beg` 开始迭代器
 * `end` 结束迭代器
@@ -422,9 +417,8 @@ int main()
 
 **函数原型**：
 
-`count(iterator beg, iterator end, value);`
+`count(iterator beg, iterator end, value);`	统计元素出现次数
 
-* 统计元素出现次数
 * `beg` 开始迭代器
 * `end` 结束迭代器
 * `value` 统计的元素
@@ -528,9 +522,8 @@ int main()
 
 **函数原型**：
 
-`count_if(iterator beg, iterator end, _Pred);`
+`count_if(iterator beg, iterator end, _Pred);`	按条件统计元素出现次数
 
-* 按条件统计元素出现次数
 * `beg` 开始迭代器
 * `end` 结束迭代器
 * `_Pred` 谓词

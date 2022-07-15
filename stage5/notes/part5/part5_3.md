@@ -178,7 +178,7 @@ int main()
 
 **函数原型**：
 
-* `merge(iterator beg1, iterator end1, iterator beg2, iterator end2, iterator dest);`   容器元素合并，并存储到另一容器中。注意: 两个容器必须是 **有序的**
+`merge(iterator beg1, iterator end1, iterator beg2, iterator end2, iterator dest);`   容器元素合并，并存储到另一容器中。注意: 两个容器必须是 **有序的**
 
 * `beg1` 容器 1 开始迭代器
 * `end1` 容器 1 结束迭代器
