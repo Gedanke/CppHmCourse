@@ -5,7 +5,6 @@ using namespace std;
 
 void test();
 
-
 int main()
 {
 	SpeechManager sp;
@@ -18,7 +17,7 @@ int main()
 	// }
 
 	// 用来存储用户的选项
-	int choice = 0; 
+	int choice = 0;
 	while (true)
 	{
 		sp.showMenu();
@@ -34,9 +33,11 @@ int main()
 			break;
 		case 2:
 			// 查看记录
+			sp.showRecord();
 			break;
 		case 3:
 			// 清空记录
+			sp.clearRecord();
 			break;
 		case 0:
 			// 退出系统
