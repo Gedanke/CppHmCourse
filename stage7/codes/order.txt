@@ -1,0 +1,3 @@
+date:1 interval:1 stuId:1 stuName:Jack roomId:3 status:0
+date:3 interval:2 stuId:2 stuName:Mark roomId:2 status:2
+date:5 interval:1 stuId:3 stuName:Some roomId:1 status:-1
