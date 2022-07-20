@@ -23,8 +23,8 @@
 机房总共有 3 间
 
 * 1 号机房 --- 最大容量 20 人
-* 2 号机房 --- 最多容量 50 人
-* 3 号机房 --- 最多容量 100 人
+* 2 号机房 --- 最大容量 50 人
+* 3 号机房 --- 最大容量 100 人
 
 ### 申请简介
 
@@ -2011,30 +2011,1162 @@ if (type == 1)
 * 登录验证通过:
 
 ```text
+=====================  欢迎来到机房预约系统  ====================
 
+请输入您的身份
+                 -------------------------------
+                |                               |
+                |          1.学生代表           |
+                |                               |
+                |          2.老    师           |
+                |                               |
+                |          3.管 理 员           |
+                |                               |
+                |          0.退    出           |
+                |                               |
+                 -------------------------------
+输入您的选择: 
+1
+请输入学生学号:
+1
+请输入用户名:
+Jack
+请输入密码:
+123
+学生登陆验证成功!
 ```
 
 * 学生子菜单:
 
 ```text
+欢迎学生代表：Jack登录！
+                 ----------------------------------
+                |                                 |
+                |          1.申请预约              |
+                |                                 |
+                |          2.查看我的预约          |
+                |                                 |
+                |          3.查看所有预约          |
+                |                                 |
+                |          4.取消预约              |
+                |                                 |
+                |          0.注销登录              |
+                |                                 |
+                 ----------------------------------
+请选择您的操作： 
 
 ```
 
 * 注销登录:
 
+```text
+欢迎学生代表：Jack登录！
+                 ----------------------------------
+                |                                 |
+                |          1.申请预约              |
+                |                                 |
+                |          2.查看我的预约          |
+                |                                 |
+                |          3.查看所有预约          |
+                |                                 |
+                |          4.取消预约              |
+                |                                 |
+                |          0.注销登录              |
+                |                                 |
+                 ----------------------------------
+请选择您的操作： 
+0
+注销成功
+```
 
+### 申请预约
 
+#### 获取机房信息
 
+* 在申请预约时，学生可以看到机房的信息，因此我们需要让学生获取到机房的信息
 
+在 `student.h` 中添加新成员以及对应的 `set` 与 `get` 方法(略)如下:
 
+```cpp
+// 机房容器
+vector<ComputerRoom> vecCom;
+```
 
+在学生的有参构造函数中追加如下代码：
+
+```cpp
+// 有参构造
+Student::Student(int studentId, string name, string password)
+{
+    // 初始化属性
+    this->studentId = studentId;
+    this->name = name;
+    this->password = password;
+
+    // 获取机房信息
+    ifstream ifs;
+    ifs.open(COMPUTER_FILE, ios::in);
+
+    ComputerRoom c;
+    while (ifs >> c.comId && ifs >> c.maxNum)
+    {
+        this->vecCom.push_back(c);
+    }
+    ifs.close();
+}
+```
+
+至此，`vecCom` 容器中保存了所有机房的信息
+
+#### 预约功能实现
+
+在 `student.cpp` 中实现成员函数 `void Student::applyOrder()`
+
+```cpp
+// 申请预约
+void Student::applyOrder()
+{
+    cout << "机房开放时间为周一至周五！" << endl;
+    cout << "请输入申请预约的时间：" << endl;
+    cout << "1、周一" << endl;
+    cout << "2、周二" << endl;
+    cout << "3、周三" << endl;
+    cout << "4、周四" << endl;
+    cout << "5、周五" << endl;
+
+    int date = 0;
+    int interval = 0;
+    int room = 0;
+
+    while (true)
+    {
+        cin >> date;
+        if (date >= 1 && date <= 5)
+        {
+            break;
+        }
+        cout << "输入有误，请重新输入" << endl;
+    }
+
+    cout << "请输入申请预约的时间段：" << endl;
+    cout << "1、上午" << endl;
+    cout << "2、下午" << endl;
+
+    while (true)
+    {
+        cin >> interval;
+        if (interval >= 1 && interval <= 2)
+        {
+            break;
+        }
+        cout << "输入有误，请重新输入" << endl;
+    }
+
+    cout << "请选择机房：" << endl;
+    cout << "1 号机房容量：" << this->vecCom[0].maxNum << endl;
+    cout << "2 号机房容量：" << this->vecCom[1].maxNum << endl;
+    cout << "3 号机房容量：" << this->vecCom[2].maxNum << endl;
+
+    while (true)
+    {
+        cin >> room;
+        if (room >= 1 && room <= 3)
+        {
+            break;
+        }
+        cout << "输入有误，请重新输入" << endl;
+    }
+
+    cout << "预约成功！审核中" << endl;
+
+    ofstream ofs(ORDER_FILE, ios::app);
+    ofs << "date:" << date << " ";
+    ofs << "interval:" << interval << " ";
+    ofs << "stuId:" << this->studentId << " ";
+    ofs << "stuName:" << this->name << " ";
+    ofs << "roomId:" << room << " ";
+    ofs << "status:" << 1 << endl;
+
+    ofs.close();
+}
+```
+
+运行程序，测试代码
+
+```text
+欢迎学生代表：Jack登录！
+                 ----------------------------------
+                |                                 |
+                |          1.申请预约              |
+                |                                 |
+                |          2.查看我的预约          |
+                |                                 |
+                |          3.查看所有预约          |
+                |                                 |
+                |          4.取消预约              |
+                |                                 |
+                |          0.注销登录              |
+                |                                 |
+                 ----------------------------------
+请选择您的操作： 
+1
+机房开放时间为周一至周五！
+请输入申请预约的时间：
+1、周一
+2、周二
+3、周三
+4、周四
+5、周五
+1
+请输入申请预约的时间段：
+1、上午
+2、下午
+1
+请选择机房：
+1 号机房容量：20
+2 号机房容量：50
+3 号机房容量：100
+1
+预约成功！审核中
+```
+
+在 `order.txt` 文件中生成如下内容
+
+```text
+date:1 interval:1 stuId:1 stuName:Jack roomId:1 status:1
+
+```
+
+### 显示预约
+
+#### 创建预约类
+
+**功能描述**：
+
+显示预约记录时，需要从文件中获取到所有记录，用来显示，创建预约的类来管理记录以及更新
+
+在头文件以及源文件下分别创建 `orderFile.h` 和 `orderFile.cpp`文件
+
+`orderFile.h` 中添加如下代码：
+
+```cpp
+#pragma once
+#include <iostream>
+#include <map>
+#include "globalFile.h"
+
+using namespace std;
+
+class OrderFile
+{
+public:
+    // 预约纪录条数
+    int size;
+
+    // 记录的容器，key --- 记录的条数，value --- 具体记录的键值对信息
+    map<int, map<string, string>> orderData;
+
+public:
+    // 构造函数
+    OrderFile();
+
+    // 更新预约记录
+    void updateOrder();
+};
+```
+
+**构造函数** 中获取所有信息，并存放在容器中，添加如下代码：
+
+```cpp
+// 构造函数
+OrderFile::OrderFile()
+{
+    ifstream ifs;
+    ifs.open(ORDER_FILE, ios::in);
+
+    // 日期
+    string date;
+    // 时间段
+    string interval;
+    // 学生编号
+    string stuId;
+    // 学生姓名
+    string stuName;
+    // 机房编号
+    string roomId;
+    // 预约状态
+    string status;
+
+    // 预约记录个数
+    this->size = 0;
+
+    while (ifs >> date && ifs >> interval && ifs >> stuId && ifs >> stuName && ifs >> roomId && ifs >> status)
+    {
+        // 测试代码
+        /*
+        cout << date << endl;
+        cout << interval << endl;
+        cout << stuId << endl;
+        cout << stuName << endl;
+        cout << roomId << endl;
+        cout << status << endl;
+        */
+
+        string key;
+        string value;
+        map<string, string> m;
+
+        int pos = date.find(":");
+        if (pos != -1)
+        {
+            key = date.substr(0, pos);
+            value = date.substr(pos + 1, date.size() - pos - 1);
+            m.insert(make_pair(key, value));
+        }
+
+        pos = interval.find(":");
+        if (pos != -1)
+        {
+            key = interval.substr(0, pos);
+            value = interval.substr(pos + 1, interval.size() - pos - 1);
+            m.insert(make_pair(key, value));
+        }
+
+        pos = stuId.find(":");
+        if (pos != -1)
+        {
+            key = stuId.substr(0, pos);
+            value = stuId.substr(pos + 1, stuId.size() - pos - 1);
+            m.insert(make_pair(key, value));
+        }
+
+        pos = stuName.find(":");
+        if (pos != -1)
+        {
+            key = stuName.substr(0, pos);
+            value = stuName.substr(pos + 1, stuName.size() - pos - 1);
+            m.insert(make_pair(key, value));
+        }
+
+        pos = roomId.find(":");
+        if (pos != -1)
+        {
+            key = roomId.substr(0, pos);
+            value = roomId.substr(pos + 1, roomId.size() - pos - 1);
+            m.insert(make_pair(key, value));
+        }
+
+        pos = status.find(":");
+        if (pos != -1)
+        {
+            key = status.substr(0, pos);
+            value = status.substr(pos + 1, status.size() - pos - 1);
+            m.insert(make_pair(key, value));
+        }
+
+        this->orderData.insert(make_pair(this->size, m));
+        this->size++;
+    }
+
+    // 测试代码
+    // for (map<int, map<string, string>>::iterator it = m_orderData.begin(); it != m_orderData.end();it++)
+    // {
+    // 	cout << "key = " << it->first << " value = " << endl;
+    // 	for (map<string, string>::iterator mit = it->second.begin(); mit != it->second.end(); mit++)
+    // 	{
+    // 		cout << mit->first << " " << mit->second << " ";
+    // 	}
+    // 	cout << endl;
+    // }
+
+    ifs.close();
+}
+```
+
+更新预约记录的成员函数 `updateOrder` 代码如下：
+
+```cpp
+// 更新预约记录
+void OrderFile::updateOrder()
+{
+    if (this->size == 0)
+    {
+        return;
+    }
+
+    ofstream ofs(ORDER_FILE, ios::out | ios::trunc);
+    for (int i = 0; i < this->size; i++)
+    {
+        ofs << "date:" << this->orderData[i]["date"] << " ";
+        ofs << "interval:" << this->orderData[i]["interval"] << " ";
+        ofs << "stuId:" << this->orderData[i]["stuId"] << " ";
+        ofs << "stuName:" << this->orderData[i]["stuName"] << " ";
+        ofs << "roomId:" << this->orderData[i]["roomId"] << " ";
+        ofs << "status:" << this->orderData[i]["status"] << endl;
+    }
+    ofs.close();
+}
+```
+
+#### 显示自身预约
+
+首先我们先添加几条预约记录，可以用程序添加或者直接修改 `order.txt` 文件
+
+`order.txt` 文件内容如下：比如我们有三名同学分别产生了 3 条预约记录
+
+```text
+date:1 interval:1 stuId:1 stuName:Jack roomId:3 status:1
+date:3 interval:2 stuId:2 stuName:Mark roomId:2 status:1
+date:5 interval:1 stuId:3 stuName:Some roomId:1 status:1
+
+```
+
+在 `Student` 类的 `void Student::showMyOrder()` 成员函数中，添加如下代码
+
+```cpp
+// 查看我的预约
+void Student::showMyOrder()
+{
+    OrderFile of;
+    if (of.size == 0)
+    {
+        cout << "无预约记录" << endl;
+        return;
+    }
+
+    for (int i = 0; i < of.size; i++)
+    {
+        if (atoi(of.orderData[i]["stuId"].c_str()) == this->studentId)
+        {
+            cout << "预约日期： 周" << of.orderData[i]["date"];
+            cout << " 时段：" << (of.orderData[i]["interval"] == "1" ? "上午" : "下午");
+            cout << " 机房：" << of.orderData[i]["roomId"];
+
+            // 0 取消的预约，1 审核中，2 已预约，-1 预约失败
+            string status = " 状态： ";
+            if (of.orderData[i]["status"] == "1")
+            {
+                status += "审核中";
+            }
+            else if (of.orderData[i]["status"] == "2")
+            {
+                status += "预约成功";
+            }
+            else if (of.orderData[i]["status"] == "-1")
+            {
+                status += "审核未通过，预约失败";
+            }
+            else
+            {
+                status += "预约已取消";
+            }
+            cout << status << endl;
+        }
+    }
+}
+```
+
+测试效果如下:
+
+```text
+欢迎学生代表：Jack登录！
+                 ----------------------------------
+                |                                 |
+                |          1.申请预约              |
+                |                                 |
+                |          2.查看我的预约          |
+                |                                 |
+                |          3.查看所有预约          |
+                |                                 |
+                |          4.取消预约              |
+                |                                 |
+                |          0.注销登录              |
+                |                                 |
+                 ----------------------------------
+请选择您的操作： 
+2
+预约日期： 周1 时段：上午 机房：3 状态： 审核中
+```
+
+#### 显示所有预约
+
+在 `Student` 类的 `void Student::showAllOrder()` 成员函数中，添加如下代码
+
+```cpp
+// 查看所有预约
+void Student::showAllOrder()
+{
+    OrderFile of;
+    if (of.size == 0)
+    {
+        cout << "无预约记录" << endl;
+        return;
+    }
+
+    for (int i = 0; i < of.size; i++)
+    {
+        cout << i + 1 << "、 ";
+        cout << "预约日期： 周" << of.orderData[i]["date"];
+        cout << " 时段：" << (of.orderData[i]["interval"] == "1" ? "上午" : "下午");
+        cout << " 学号：" << of.orderData[i]["stuId"];
+        cout << " 姓名：" << of.orderData[i]["stuName"];
+        cout << " 机房：" << of.orderData[i]["roomId"];
+
+        // 0 取消的预约，1 审核中，2 已预约，-1 预约失败
+        string status = " 状态： ";
+        if (of.orderData[i]["status"] == "1")
+        {
+            status += "审核中";
+        }
+        else if (of.orderData[i]["status"] == "2")
+        {
+            status += "预约成功";
+        }
+        else if (of.orderData[i]["status"] == "-1")
+        {
+            status += "审核未通过，预约失败";
+        }
+        else
+        {
+            status += "预约已取消";
+        }
+        cout << status << endl;
+    }
+}
+```
+
+测试效果如下:
+
+```text
+欢迎学生代表：Jack登录！
+                 ----------------------------------
+                |                                 |
+                |          1.申请预约              |
+                |                                 |
+                |          2.查看我的预约          |
+                |                                 |
+                |          3.查看所有预约          |
+                |                                 |
+                |          4.取消预约              |
+                |                                 |
+                |          0.注销登录              |
+                |                                 |
+                 ----------------------------------
+请选择您的操作： 
+3
+1、 预约日期： 周1 时段：上午 学号：1 姓名：Jack 机房：3 状态： 审核中
+2、 预约日期： 周3 时段：下午 学号：2 姓名：Mark 机房：2 状态： 审核中
+3、 预约日期： 周5 时段：上午 学号：3 姓名：Some 机房：1 状态： 审核中
+```
+
+### 取消预约
+
+在 `Student` 类的 `void Student::cancelOrder()` 成员函数中，添加如下代码
+
+```cpp
+// 取消预约
+void Student::canceOrder()
+{
+    OrderFile of;
+    if (of.size == 0)
+    {
+        cout << "无预约记录" << endl;
+        return;
+    }
+    cout << "审核中或预约成功的记录可以取消，请输入取消的记录" << endl;
+
+    vector<int> v;
+    int index = 1;
+    for (int i = 0; i < of.size; i++)
+    {
+        if (atoi(of.orderData[i]["stuId"].c_str()) == this->studentId)
+        {
+            if (of.orderData[i]["status"] == "1" || of.orderData[i]["status"] == "2")
+            {
+                v.push_back(i);
+                cout << index++ << "、 ";
+                cout << "预约日期： 周" << of.orderData[i]["date"];
+                cout << " 时段：" << (of.orderData[i]["interval"] == "1" ? "上午" : "下午");
+                cout << " 机房：" << of.orderData[i]["roomId"];
+
+                // 0 取消的预约，1 审核中，2 已预约，-1 预约失败
+                string status = " 状态： ";
+                if (of.orderData[i]["status"] == "1")
+                {
+                    status += "审核中";
+                }
+                else if (of.orderData[i]["status"] == "2")
+                {
+                    status += "预约成功";
+                }
+                cout << status << endl;
+            }
+        }
+    }
+
+    cout << "请输入取消的记录，0 代表返回" << endl;
+    int select = 0;
+    while (true)
+    {
+        cin >> select;
+        if (select >= 0 && select <= v.size())
+        {
+            if (select == 0)
+            {
+                break;
+            }
+            else
+            {
+                // cout << "记录所在位置： " << v[select - 1] << endl;
+                of.orderData[v[select - 1]]["status"] = "0";
+                of.updateOrder();
+                cout << "已取消预约" << endl;
+                break;
+            }
+        }
+        cout << "输入有误，请重新输入" << endl;
+    }
+}
+```
+
+测试取消预约：
+
+```text
+欢迎学生代表：Jack登录！
+                 ----------------------------------
+                |                                 |
+                |          1.申请预约              |
+                |                                 |
+                |          2.查看我的预约          |
+                |                                 |
+                |          3.查看所有预约          |
+                |                                 |
+                |          4.取消预约              |
+                |                                 |
+                |          0.注销登录              |
+                |                                 |
+                 ----------------------------------
+请选择您的操作： 
+4
+审核中或预约成功的记录可以取消，请输入取消的记录
+1、 预约日期： 周1 时段：上午 机房：3 状态： 审核中
+请输入取消的记录，0 代表返回
+1
+已取消预约
+```
+
+再次查看个人预约记录：
+
+```text
+欢迎学生代表：Jack登录！
+                 ----------------------------------
+                |                                 |
+                |          1.申请预约              |
+                |                                 |
+                |          2.查看我的预约          |
+                |                                 |
+                |          3.查看所有预约          |
+                |                                 |
+                |          4.取消预约              |
+                |                                 |
+                |          0.注销登录              |
+                |                                 |
+                 ----------------------------------
+请选择您的操作： 
+2
+预约日期： 周1 时段：上午 机房：3 状态： 预约已取消
+```
+
+查看所有预约
+
+```text
+欢迎学生代表：Jack登录！
+                 ----------------------------------
+                |                                 |
+                |          1.申请预约              |
+                |                                 |
+                |          2.查看我的预约          |
+                |                                 |
+                |          3.查看所有预约          |
+                |                                 |
+                |          4.取消预约              |
+                |                                 |
+                |          0.注销登录              |
+                |                                 |
+                 ----------------------------------
+请选择您的操作： 
+3
+1、 预约日期： 周1 时段：上午 学号：1 姓名：Jack 机房：3 状态： 预约已取消
+2、 预约日期： 周3 时段：下午 学号：2 姓名：Mark 机房：2 状态： 审核中
+3、 预约日期： 周5 时段：上午 学号：3 姓名：Some 机房：1 状态： 审核中
+```
+
+查看 `order.txt` 预约文件
+
+```text
+date:1 interval:1 stuId:1 stuName:Jack roomId:3 status:0
+date:3 interval:2 stuId:2 stuName:Mark roomId:2 status:1
+date:5 interval:1 stuId:3 stuName:Some roomId:1 status:1
+
+```
+
+至此，学生模块功能全部实现
 
 ---
 
 ## 教师模块
 
+### 教师登录和注销
 
+#### 构造函数
 
+* 在 `Teacher` 类的构造函数中，初始化教师信息，代码如下：
 
+```cpp
+// 有参构造
+Teacher::Teacher(int teacherId, string name, string password)
+{
+    // 初始化属性
+    this->teacherId = teacherId;
+    this->name = name;
+    this->password = password;
+}
+```
+
+#### 教师子菜单
+
+* 在 `main.cpp` 中，当用户登录的是教师，添加教师菜单接口
+* 将不同的分支提供出来
+    * 查看所有预约
+    * 审核预约
+    * 注销登录
+* 实现注销功能
+
+添加全局函数 `void teacherMenu(Identity *&teacher)` 代码如下：
+
+```cpp
+// 教师菜单
+void teacherMenu(Identity *&teacher)
+{
+	while (true)
+	{
+		// 教师菜单
+		teacher->operMenu();
+
+		Teacher *tea = (Teacher *)teacher;
+		int select = 0;
+		cin >> select;
+
+		if (select == 1)
+		{
+			// 查看所有预约
+			tea->showAllOrder();
+		}
+		else if (select == 2)
+		{
+			// 审核预约
+			tea->validOrder();
+		}
+		else
+		{
+			delete teacher;
+			cout << "注销成功" << endl;
+			return;
+		}
+	}
+}
+```
+
+#### 菜单功能实现
+
+* 在实现成员函数 `void Teacher::operMenu()` 代码如下：
+
+```cpp
+// 菜单界面
+void Teacher::operMenu()
+{
+    cout << "欢迎教师：" << this->name << "登录！" << endl;
+    cout << "\t\t ----------------------------------\n";
+    cout << "\t\t|                                  |\n";
+    cout << "\t\t|          1.查看所有预约          |\n";
+    cout << "\t\t|                                  |\n";
+    cout << "\t\t|          2.审核预约              |\n";
+    cout << "\t\t|                                  |\n";
+    cout << "\t\t|          0.注销登录              |\n";
+    cout << "\t\t|                                  |\n";
+    cout << "\t\t ----------------------------------\n";
+    cout << "请选择您的操作： " << endl;
+}
+```
+
+##### 接口对接
+
+* 教师成功登录后，调用教师的子菜单界面
+* 在教师登录分支中，添加代码
+
+```cpp
+else if (type == 2)
+{
+	// 教师登陆验证
+	int fId;
+	string fName;
+	string fPwd;
+
+	while (ifs >> fId && ifs >> fName && ifs >> fPwd)
+	{
+		if (id == fId && name == fName && password == fPwd)
+		{
+			cout << "教师登陆验证成功!" << endl;
+			person = new Teacher(id, name, password);
+
+			// 进入教师子菜单
+			teacherMenu(person);
+			return;
+		}
+	}
+}
+```
+
+测试对接，效果如下，可以看到登录验证通过：
+
+```text
+=====================  欢迎来到机房预约系统  ====================
+
+请输入您的身份
+                 -------------------------------
+                |                               |
+                |          1.学生代表           |
+                |                               |
+                |          2.老    师           |
+                |                               |
+                |          3.管 理 员           |
+                |                               |
+                |          0.退    出           |
+                |                               |
+                 -------------------------------
+输入您的选择: 
+2
+请输入教职工号:
+1
+请输入用户名:
+Cory
+请输入密码:
+123456
+教师登陆验证成功!
+```
+
+教师子菜单：
+
+```text
+欢迎教师：Cory登录！
+                 ----------------------------------
+                |                                  |
+                |          1.查看所有预约          |
+                |                                  |
+                |          2.审核预约              |
+                |                                  |
+                |          0.注销登录              |
+                |                                  |
+                 ----------------------------------
+请选择您的操作： 
+
+```
+
+注销登录：
+
+```text
+欢迎教师：Cory登录！
+                 ----------------------------------
+                |                                  |
+                |          1.查看所有预约          |
+                |                                  |
+                |          2.审核预约              |
+                |                                  |
+                |          0.注销登录              |
+                |                                  |
+                 ----------------------------------
+请选择您的操作： 
+0
+注销成功
+```
+
+### 查看所有预约
+
+#### 所有预约功能实现
+
+该功能与学生身份的查看所有预约功能相似，用于显示所有预约记录
+
+在 `teacher.cpp` 中实现成员函数 `void Teacher::showAllOrder()`
+
+```cpp
+// 查看所有预约
+void Teacher::showAllOrder()
+{
+    OrderFile of;
+    if (of.size == 0)
+    {
+        cout << "无预约记录" << endl;
+        system("pause");
+        system("cls");
+        return;
+    }
+
+    for (int i = 0; i < of.size; i++)
+    {
+        cout << i + 1 << "、 ";
+        cout << "预约日期： 周" << of.orderData[i]["date"];
+        cout << " 时段：" << (of.orderData[i]["interval"] == "1" ? "上午" : "下午");
+        cout << " 学号：" << of.orderData[i]["stuId"];
+        cout << " 姓名：" << of.orderData[i]["stuName"];
+        cout << " 机房：" << of.orderData[i]["roomId"];
+
+        // 0 取消的预约，1 审核中，2 已预约，-1 预约失败
+        string status = " 状态： ";
+        if (of.orderData[i]["status"] == "1")
+        {
+            status += "审核中";
+        }
+        else if (of.orderData[i]["status"] == "2")
+        {
+            status += "预约成功";
+        }
+        else if (of.orderData[i]["status"] == "-1")
+        {
+            status += "审核未通过，预约失败";
+        }
+        else
+        {
+            status += "预约已取消";
+        }
+        cout << status << endl;
+    }
+}
+```
+
+#### 测试功能
+
+运行测试教师身份的查看所有预约功能
+
+测试效果如下：
+
+```text
+欢迎教师：Cory登录！
+                 ----------------------------------
+                |                                  |
+                |          1.查看所有预约          |
+                |                                  |
+                |          2.审核预约              |
+                |                                  |
+                |          0.注销登录              |
+                |                                  |
+                 ----------------------------------
+请选择您的操作： 
+1
+1、 预约日期： 周1 时段：上午 学号：1 姓名：Jack 机房：3 状态： 预约已取消
+2、 预约日期： 周3 时段：下午 学号：2 姓名：Mark 机房：2 状态： 审核中
+3、 预约日期： 周5 时段：上午 学号：3 姓名：Some 机房：1 状态： 审核中
+```
+
+### 审核预约
+
+#### 审核功能实现
+
+**功能描述**：
+
+教师审核学生的预约，依据实际情况审核预约
+
+在 `teacher.cpp` 中实现成员函数 `void Teacher::validOrder()`
+
+```cpp
+// 审核预约
+void Teacher::validOrder()
+{
+    OrderFile of;
+    if (of.size == 0)
+    {
+        cout << "无预约记录" << endl;
+        return;
+    }
+    cout << "待审核的预约记录如下：" << endl;
+
+    vector<int> v;
+    int index = 0;
+    for (int i = 0; i < of.size; i++)
+    {
+        if (of.orderData[i]["status"] == "1")
+        {
+            v.push_back(i);
+            cout << ++index << "、 ";
+            cout << "预约日期： 周" << of.orderData[i]["date"];
+            cout << " 时段：" << (of.orderData[i]["interval"] == "1" ? "上午" : "下午");
+            cout << " 机房：" << of.orderData[i]["roomId"];
+
+            // 0 取消的预约，1 审核中，2 已预约，-1 预约失败
+            string status = " 状态： ";
+            if (of.orderData[i]["status"] == "1")
+            {
+                status += "审核中";
+            }
+            cout << status << endl;
+        }
+    }
+    cout << "请输入审核的预约记录，0 代表返回" << endl;
+
+    int select = 0;
+    int ret = 0;
+    while (true)
+    {
+        cin >> select;
+        if (select >= 0 && select <= v.size())
+        {
+            if (select == 0)
+            {
+                break;
+            }
+            else
+            {
+                cout << "请输入审核结果" << endl;
+                cout << "1、通过" << endl;
+                cout << "2、不通过" << endl;
+                cin >> ret;
+
+                if (ret == 1)
+                {
+                    of.orderData[v[select - 1]]["status"] = "2";
+                }
+                else
+                {
+                    of.orderData[v[select - 1]]["status"] = "-1";
+                }
+                of.updateOrder();
+                cout << "审核完毕！" << endl;
+                break;
+            }
+        }
+        cout << "输入有误，请重新输入" << endl;
+    }
+}
+```
+
+#### 测试审核预约
+
+* 测试 - 审核通过
+
+```text
+欢迎教师：Cory登录！
+                 ----------------------------------
+                |                                  |
+                |          1.查看所有预约          |
+                |                                  |
+                |          2.审核预约              |
+                |                                  |
+                |          0.注销登录              |
+                |                                  |
+                 ----------------------------------
+请选择您的操作： 
+2
+待审核的预约记录如下：
+1、 预约日期： 周3 时段：下午 机房：2 状态： 审核中
+2、 预约日期： 周5 时段：上午 机房：1 状态： 审核中
+请输入审核的预约记录，0 代表返回
+1
+请输入审核结果
+1、通过
+2、不通过
+1
+审核完毕！
+```
+
+* 审核通过情况
+
+```text
+欢迎教师：Cory登录！
+                 ----------------------------------
+                |                                  |
+                |          1.查看所有预约          |
+                |                                  |
+                |          2.审核预约              |
+                |                                  |
+                |          0.注销登录              |
+                |                                  |
+                 ----------------------------------
+请选择您的操作： 
+1
+1、 预约日期： 周1 时段：上午 学号：1 姓名：Jack 机房：3 状态： 预约已取消
+2、 预约日期： 周3 时段：下午 学号：2 姓名：Mark 机房：2 状态： 预约成功
+3、 预约日期： 周5 时段：上午 学号：3 姓名：Some 机房：1 状态： 审核中
+```
+
+* 测试-审核未通过
+
+```text
+欢迎教师：Cory登录！
+                 ----------------------------------
+                |                                  |
+                |          1.查看所有预约          |
+                |                                  |
+                |          2.审核预约              |
+                |                                  |
+                |          0.注销登录              |
+                |                                  |
+                 ----------------------------------
+请选择您的操作： 
+2
+待审核的预约记录如下：
+1、 预约日期： 周5 时段：上午 机房：1 状态： 审核中
+请输入审核的预约记录，0 代表返回
+1
+请输入审核结果
+1、通过
+2、不通过
+2
+审核完毕！
+```
+
+* 审核未通过情况：
+
+```text
+欢迎教师：Cory登录！
+                 ----------------------------------
+                |                                  |
+                |          1.查看所有预约          |
+                |                                  |
+                |          2.审核预约              |
+                |                                  |
+                |          0.注销登录              |
+                |                                  |
+                 ----------------------------------
+请选择您的操作： 
+1
+1、 预约日期： 周1 时段：上午 学号：1 姓名：Jack 机房：3 状态： 预约已取消
+2、 预约日期： 周3 时段：下午 学号：2 姓名：Mark 机房：2 状态： 预约成功
+3、 预约日期： 周5 时段：上午 学号：3 姓名：Some 机房：1 状态： 审核未通过，预约失败
+```
+
+* 学生身份下查看记录：
+
+```text
+欢迎学生代表：Mark登录！
+                 ----------------------------------
+                |                                 |
+                |          1.申请预约              |
+                |                                 |
+                |          2.查看我的预约          |
+                |                                 |
+                |          3.查看所有预约          |
+                |                                 |
+                |          4.取消预约              |
+                |                                 |
+                |          0.注销登录              |
+                |                                 |
+                 ----------------------------------
+请选择您的操作： 
+2
+预约日期： 周3 时段：下午 机房：2 状态： 预约成功
+```
+
+审核预约成功
+
+至此本案例制作完毕
 
 ---
